@@ -36,22 +36,21 @@
        ctx.strokeRect = ("10,10,150,100");
        ctx.stroke();
 
-        //adding my name to canvas
-        ctx.fillStyle ="bold italic 50px Arial";
-        
-        ctx.fillStyle = "black";
-
-        ctx.font = "30px Arial";
-
-
-        ctx.fillText("Nathan Carr", 10, 50);
-
+        //creating a 2nd rectangle
+        ctx.fillStyle = "rgba(120,0,120,0.5)";
+        ctx.lineWidth = "6";
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(40,40,150,100);
+        ctx.fillRect(40,40,150,100);
        
 
-        
-        
-		
-		// Create a filled rectangle 
+        //adding my name to canvas
+        ctx.fillStyle ="bold italic 50px Arial";       
+        ctx.fillStyle = "black";
+        ctx.font = "30px Arial";
+        ctx.fillText("Nathan Carr", 10, 50);
+
+      
 		
 	  
 		
