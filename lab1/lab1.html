@@ -1,61 +1,41 @@
 <!DOCTYPE html>
-
 <html>
-
   <head>
     <meta charset="UTF-8">
     <title>Canvas</title>
-
-    <style type="text/css">
-	
-    </style>
-
   </head>
-
   <body>
-
-    <canvas id="canvasOne" height="400" width="500" style="border:1px solid #000000"> </canvas>
+    <canvas id="canvasOne" height="400" width="500" style="border:1px solid #000000"></canvas>
 
     <script type="text/javascript">
-		// Gets a handle to the element with id canvasOne.
-        const canvasOne =document.getElementById("canvasOne");
-		
-		// Set the canvas up for drawing in 2D.
-        const ctx = canvasOne.getContext("2d");
-        
+      // Gets a handle to the element with id canvasOne.
+      const canvasOne = document.getElementById("canvasOne");
 
-     
-        
-       // Set the fill colour to bright red.
-       ctx.fillStyle = "rgb(255, 0, 0)";
+      // Set the canvas up for drawing in 2D.
+      const ctx = canvasOne.getContext("2d");
 
-       //creating a filled rectangle 
-       ctx.fillRect(10,10,150,100);
-       ctx.lineWidth ="6";
-       ctx.strokeStyle ="red";
-       ctx.strokeRect = ("10,10,150,100");
-       ctx.stroke();
+      // Set the fill color to bright red.
+      ctx.fillStyle = "rgb(255, 0, 0)";
 
-        //creating a 2nd rectangle
-        ctx.fillStyle = "rgba(120,0,120,0.5)";
-        ctx.lineWidth = "6";
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(40,40,150,100);
-        ctx.fillRect(40,40,150,100);
-       
+      // Create a filled rectangle.
+      ctx.fillRect(10, 10, 150, 100);
 
-        //adding my name to canvas
-        ctx.fillStyle ="bold italic 50px Arial";       
-        ctx.fillStyle = "black";
-        ctx.font = "30px Arial";
-        ctx.fillText("Nathan Carr", 10, 50);
+      // Set line width and stroke color.
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "red";
+      ctx.strokeRect(10, 10, 150, 100);
 
-      
-		
-	  
-		
+      // Create a 2nd rectangle.
+      ctx.fillStyle = "rgba(120,0,120,0.5)";
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "black";
+      ctx.strokeRect(40, 40, 150, 100);
+      ctx.fillRect(40, 40, 150, 100);
+
+      // adding my name is canvas
+      ctx.fillStyle = "black";
+      ctx.font = "48px serif";
+      ctx.fillText("Nathan Carr", 50, 200);
     </script>
-
   </body>
-
 </html>
