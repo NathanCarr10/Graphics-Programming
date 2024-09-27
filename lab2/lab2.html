@@ -19,7 +19,7 @@
     <h1> Nathan Carr </h1>
     
      
-    <canvas id="canvas-for-ball" width ="300" height = "150" style="border:1px solid #000000"> </canvas>
+    <canvas id="canvas-for-ball" width ="600" height = "400" style="border:1px solid #000000"> </canvas>
 
     <script type="text/javascript">
       // Gets a handle to the element with id canvasOne.
@@ -31,13 +31,17 @@
       var y = 10;
       // A function to repeat every time the animation loops.
       function repeatme() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         // Draw the ball (stroked, not filled).
         ctx.beginPath();
-        ctx.arc(50, y, 3, 0, 2 * Math.PI);
+        ctx.arc(50, y, 10, 0, 2 * Math.PI);
         ctx.stroke();
         
         // Update the y location.
         y += 1;
+
+       
         
         window.requestAnimationFrame(repeatme);
       }
