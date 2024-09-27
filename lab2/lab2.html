@@ -38,9 +38,13 @@
         ctx.arc(50, y, 10, 0, 2 * Math.PI);
         ctx.stroke();
         
-        // Update the y location.
-        y += 1;
+        // Update the y location so that the ball moves down the canvas
 
+        if (y + 10 < canvas.height ){ // if ball reaches the bottom it stops
+
+            y += 1;
+
+        }
        
         
         window.requestAnimationFrame(repeatme);
