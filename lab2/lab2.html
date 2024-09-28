@@ -53,12 +53,16 @@
                   this.velocityY = -this.velocityY;  // Reverse the velocity (move up)
           }
 
-          
+          // If the ball hits the top of the canvas, reverse direction again
+              if (this.y - this.radius <= 0) {
+            this.y = this.radius;  // Keep it at the top
+            this.velocityY = -this.velocityY;  // Reverse the velocity (move down)
+          }
+        }
       }
-    }
 
       // Create a ball object
-      var ball = new Ball(50, 10, 0, 2, 10);  // Initial position (50, 10), vertical velocity 2
+      var ball = new Ball(50, 10, 0, 2, 10);
 
       // Animation loop
       function repeatme() {
