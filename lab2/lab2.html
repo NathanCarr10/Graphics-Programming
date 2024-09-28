@@ -60,6 +60,14 @@
           ctx.lineTo(x1, y1);
           ctx.stroke();
 
+          // Second diagonal line (bottom left to center)
+          var x2 = this.x + diagonalLength * Math.cos(Angle2);
+          var y2 = this.y + diagonalLength * Math.sin(Angle2);
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+
         }
 
         
