@@ -8,7 +8,7 @@
 
     <style type="text/css">
       body {
-          background-color: white;
+        background-color: white;
       }
     </style>
 
@@ -18,39 +18,62 @@
     
     <h1> Nathan Carr </h1>
     
-     
-    <canvas id="canvas-for-ball" width ="600" height = "400" style="border:1px solid #000000"> </canvas>
+    <canvas id="canvas-for-ball" width="600" height="400" style="border:1px solid #000000"></canvas>
 
+    <!-- Place the script at the end of the body to ensure the DOM is fully loaded -->
     <script type="text/javascript">
-      // Gets a handle to the element with id canvasOne.
+      // Get a handle to the element with id canvas-for-ball.
       var canvas = document.getElementById("canvas-for-ball");
-      // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
-      
-      // The vertical location of the ball.
-      var y = 10;
-      // A function to repeat every time the animation loops.
-      function repeatme() {
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Draw the ball (stroked, not filled).
-        ctx.beginPath();
-        ctx.arc(50, y, 10, 0, 2 * Math.PI);
-        ctx.stroke();
-        
-        // Update the y location so that the ball moves down the canvas
-
-        if (y + 10 < canvas.height ){ // if ball reaches the bottom it stops
-
-            y += 1;
-
+      // Ball class definition
+      class Ball {
+        constructor(x, y, velocityX, velocityY, radius) {
+          this.x = x;  // Horizontal position
+          this.y = y;  // Vertical position
+          this.velocityX = velocityX;  // Horizontal velocity
+          this.velocityY = velocityY;  // Vertical velocity
+          this.radius = radius;  // Ball radius
         }
-       
+
+        // Method to draw the ball on the canvas
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+          ctx.stroke(); 
+        }
+
+        // Method to move the ball based on its velocity
+        move() {
+          this.x += this.velocityX;  // Update horizontal position
+          this.y += this.velocityY;  // Update vertical position
+
+          // Boundary check to stop the ball when it reaches the bottom
+          if (this.y + this.radius >= canvas.height) {
+            this.y = canvas.height - this.radius;  // Stop at bottom
+            this.velocityY = 0;  // Stop vertical movement
+          }
+        }
         
+      }
+
+      // Create a ball object
+      var ball = new Ball(50, 10, 0, 2, 10);  // Initial position (50, 10), vertical velocity 2
+
+      // Animation loop
+      function repeatme() {
+        // Clear the canvas before each new frame
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Move and draw the ball
+        ball.move();
+        ball.draw();
+
+        // Continue the animation
         window.requestAnimationFrame(repeatme);
       }
-      
-      // Get the animation going.
+
+      // Start the animation
       repeatme();
     </script>
 
