@@ -40,7 +40,15 @@
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
           ctx.stroke(); 
+
+          // Draw the vertical line
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y - this.radius);
+          ctx.lineTo(this.x, this.y + this.radius);
+          ctx.stroke();
         }
+
+        
 
         // Method to move the ball based on its velocity
         move() {
@@ -59,6 +67,8 @@
             this.velocityY = -this.velocityY;  // Reverse the velocity (move down)
           }
         }
+
+        
       }
 
       // Create a ball object
