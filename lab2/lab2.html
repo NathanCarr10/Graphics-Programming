@@ -20,7 +20,6 @@
     
     <canvas id="canvas-for-ball" width="600" height="400" style="border:1px solid #000000"></canvas>
 
-    <!-- Place the script at the end of the body to ensure the DOM is fully loaded -->
     <script type="text/javascript">
       // Get a handle to the element with id canvas-for-ball.
       var canvas = document.getElementById("canvas-for-ball");
@@ -45,17 +44,18 @@
 
         // Method to move the ball based on its velocity
         move() {
-          this.x += this.velocityX;  // Update horizontal position
-          this.y += this.velocityY;  // Update vertical position
+                  this.x += this.velocityX;  // Update horizontal position
+                  this.y += this.velocityY;  // Update vertical position
 
-          // Boundary check to stop the ball when it reaches the bottom
-          if (this.y + this.radius >= canvas.height) {
-            this.y = canvas.height - this.radius;  // Stop at bottom
-            this.velocityY = 0;  // Stop vertical movement
+          // If the ball hits the bottom of the canvas
+               if (this.y + this.radius >= canvas.height) {
+                  this.y = canvas.height - this.radius;  // Keep it at the bottom
+                  this.velocityY = -this.velocityY;  // Reverse the velocity (move up)
           }
-        }
-        
+
+          
       }
+    }
 
       // Create a ball object
       var ball = new Ball(50, 10, 0, 2, 10);  // Initial position (50, 10), vertical velocity 2
