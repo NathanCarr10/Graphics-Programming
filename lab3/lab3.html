@@ -48,7 +48,16 @@
 
         this.y += this.velocityY;
 
+         //Bouncing paddle off top and bottom of canvas
+         if (this.y <= 0 || this.y + this.height >= canvas.height) {
+
+          this.velocityY = -this.velocityY; //reversing direction of paddle
+
+         }
+
         }
+
+       
 
 
         }
