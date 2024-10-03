@@ -63,10 +63,6 @@
 
         }
 
-        
-
-       
-
 
           // if statement to stop paddle going off canvas
           if (this.y <= 0){
@@ -80,12 +76,7 @@
           }
 
 
-        }
-
-       
-
-
-        }
+        }}
 
 
       // Ball class definition
@@ -151,7 +142,23 @@
             this.y = this.radius;  // Keep it at the top
             this.velocityY = -this.velocityY;  // Reverse the velocity (move down)
           }
-        }
+
+          //fixing issue with ball exiting canvas on left and right sides
+            if (this.x - this.radius <= 0){
+
+                this.x = this.radius;
+                this.velocityX = this.velocityX
+
+            } else if (this.x + this.radius >= canvas.width){
+
+              this.x = canvas.width - this.radius;
+              this.velocityX = -this.velocityX;
+
+            }
+
+
+         }
+
 
         
       }
