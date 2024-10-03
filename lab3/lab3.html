@@ -36,14 +36,18 @@
         this.width = width;
         this.height = height;
         this.speed = speed;
-        this.velocityY = 1;
+        this.velocityY = 0;
         }
+        
 
+
+        //method to draw paddle
         draw() {
         ctx.fillStyle = "black";
         ctx.fillRect(this.x, this.y, this.width, this.height);
        }
         
+       //move method for paddle
         move(){
 
         this.y += this.velocityY;
@@ -54,6 +58,25 @@
           this.velocityY = -this.velocityY; //reversing direction of paddle
 
          }
+
+        }
+
+        moveTo(y){
+
+          this.y =y;
+
+
+          // if statement to stop paddle going off canvas
+          if (this.y <= 0){
+
+            this.y = 0;
+
+          } else if (this.y + this.height > canvas.height){
+
+            this.y = canvas.height - this.height;
+
+          }
+
 
         }
 
@@ -131,9 +154,15 @@
         
       }
 
-      // Create a ball object
+      // Create a ball and paddle objects
       var ball = new Ball(50, 10, 1, 2, 10);
       var paddle = new Paddle(550, 150, 10, 80, 2);
+
+      // Track paddle movement
+      var movingUp = false;
+      var movingDown = false;
+
+      
 
       // Animation loop
       function repeatme() {
