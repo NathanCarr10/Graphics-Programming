@@ -63,6 +63,11 @@
 
         }
 
+      }
+
+          //moving paddle to y coordinate for mouse movement
+          moveTo(y){
+            this.y = y;
 
           // if statement to stop paddle going off canvas
           if (this.y <= 0){
@@ -76,7 +81,10 @@
           }
 
 
-        }}
+        }
+      }
+      
+
 
 
       // Ball class definition
@@ -104,7 +112,7 @@
           // Diagonal lines are at 45 degrees from the center
           var Angle1 = Math.PI / 4;  // 45 degrees in radians
           var Angle2 = (3 * Math.PI) / 4;  // 135 degrees in radians
-          var diagonalLength = this.radius * 0.7;  // Diagonal lines are a percentage of radius
+          var diagonalLength = this.radius * 0.8;  // Diagonal lines are a percentage of radius
 
           // First diagonal line (bottom right to center)
           var x1 = this.x + diagonalLength * Math.cos(Angle1);
@@ -204,6 +212,15 @@
 
       });
 
+      // Adding mouse functionality
+      canvas.addEventListener("mousemove", function(event){
+
+        var canvasPosition = canvas.getBoundingClientRect();
+        var mouseY = event.clientY - canvasPosition.top;
+        paddle.moveTo(mouseY - paddle.height /2);
+
+
+      });
       
 
       // Animation loop
