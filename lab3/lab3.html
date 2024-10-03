@@ -30,25 +30,25 @@
 
       // Class Paddle
         class Paddle{
-        constructor(x, y, velocityX, velocityY){
+        constructor(x, y, width, height, speed) {
         this.x = x;
-        this.y = y;  // Vertical position
-        this.velocityX = velocityX;  // Horizontal velocity
-        this.velocityY = velocityY;  // Vertical velocity
-        this.size = size;  // Rectangle size
+        this.y = y;  
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+        this.velocityY = 1;
         }
 
         draw() {
-        ctx.beginPath();
-        ctx.fillRect(10, 10, 150, 100);
+        ctx.fillStyle = "black";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+       }
+        
+        move(){
 
-
-
+        this.y += this.velocityY;
 
         }
-        
-
-
 
 
         }
@@ -124,6 +124,7 @@
 
       // Create a ball object
       var ball = new Ball(50, 10, 1, 2, 10);
+      var paddle = new Paddle(550, 150, 10, 80, 2);
 
       // Animation loop
       function repeatme() {
@@ -133,6 +134,10 @@
         // Move and draw the ball
         ball.move();
         ball.draw();
+
+        //move and draw the paddle
+        paddle.move();
+        paddle.draw();
 
         // Continue the animation
         window.requestAnimationFrame(repeatme);
