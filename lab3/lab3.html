@@ -53,17 +53,19 @@
         this.y += this.velocityY;
 
          //Bouncing paddle off top and bottom of canvas
-         if (this.y <= 0 || this.y + this.height >= canvas.height) {
+        if (this.y <= 0){
 
-          this.velocityY = -this.velocityY; //reversing direction of paddle
+          this.y= 0;
 
-         }
+        } else if (this.y + this.height >= canvas.height){
+
+          this.y = canvas.height - this.height;
 
         }
 
-        moveTo(y){
+        
 
-          this.y =y;
+       
 
 
           // if statement to stop paddle going off canvas
@@ -71,7 +73,7 @@
 
             this.y = 0;
 
-          } else if (this.y + this.height > canvas.height){
+          } else if (this.y + this.height >= canvas.height){
 
             this.y = canvas.height - this.height;
 
@@ -162,6 +164,39 @@
       var movingUp = false;
       var movingDown = false;
 
+      //Keyboard functionality
+      document.addEventListener("keydown", function (e){
+        if (e.key === "ArrowUp"){
+
+          movingUp = true;
+
+        } else if (e.key === "ArrowDown"){
+
+          movingDown = true;
+
+        }
+
+
+
+
+      });
+
+
+
+      document.addEventListener("keyup", function (e){
+
+        if (e.key === "ArrowUp"){
+
+          movingUp = false;
+
+        } else if (e.key === "ArrowDown"){
+
+          movingDown = false;
+
+        }
+
+      });
+
       
 
       // Animation loop
@@ -172,6 +207,23 @@
         // Move and draw the ball
         ball.move();
         ball.draw();
+
+
+        //moving paddle from keyboard inputs
+        if (movingUp){
+
+         paddle.velocityY = -paddle.speed;
+
+        } else if (movingDown){
+
+          paddle.velocityY = paddle.speed;
+
+        } else {
+
+          paddle.velocityY = 0
+
+        }
+
 
         //move and draw the paddle
         paddle.move();
