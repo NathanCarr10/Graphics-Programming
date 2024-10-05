@@ -82,7 +82,9 @@
 
 
         }
+      
       }
+
       
 
 
@@ -173,13 +175,17 @@
 
       // Create a ball and paddle objects
       var ball = new Ball(50, 10, 1, 2, 10);
-      var paddle = new Paddle(550, 150, 10, 80, 2);
+      var rightPaddle = new Paddle(550, 150, 10, 80, 2);
+      var leftPaddle = new Paddle(40, 150, 10, 80, 2);
 
       // Track paddle movement
       var movingUp = false;
       var movingDown = false;
+      var movingLeftPaddleUp = false;
+      var movingLeftPaddleDown = false;
 
       //Keyboard functionality
+      //Right Paddle
       document.addEventListener("keydown", function (e){
         if (e.key === "ArrowUp"){
 
@@ -188,6 +194,18 @@
         } else if (e.key === "ArrowDown"){
 
           movingDown = true;
+
+        }
+
+        //Left Paddle with W & S keys
+        if (e.key === "w" || e.key === "W"){
+
+          movingLeftPaddleUp = true;
+
+
+        } else if (e.key === "s" || e.key === "S"){
+
+          movingLeftPaddleDown = true;
 
         }
 
@@ -210,6 +228,17 @@
 
         }
 
+        if (e.key === "w" || e.key === "W"){
+
+          movingLeftPaddleUp = false;
+
+
+        } else if (e.key === "s" || e.key === "S"){
+
+          movingLeftPaddleDown = false;
+
+          }
+
       });
 
       // Adding mouse functionality
@@ -217,7 +246,7 @@
 
         var canvasPosition = canvas.getBoundingClientRect();
         var mouseY = event.clientY - canvasPosition.top;
-        paddle.moveTo(mouseY - paddle.height /2);
+        rightPaddle.moveTo(mouseY - rightPaddle.height /2);
 
 
       });
@@ -236,22 +265,37 @@
         //moving paddle from keyboard inputs
         if (movingUp){
 
-         paddle.velocityY = -paddle.speed;
+         rightPaddle.velocityY = -paddle.speed;
 
         } else if (movingDown){
 
-          paddle.velocityY = paddle.speed;
+          rightPaddle.velocityY = paddle.speed;
 
         } else {
 
-          paddle.velocityY = 0
+          rightPaddle.velocityY = 0
 
         }
 
+        if (movingLeftPaddleUp) {
+
+           leftPaddle.velocityY = -leftPaddle.speed;
+
+         } else if (movingLeftPaddleDown) {
+
+            leftPaddle.velocityY = leftPaddle.speed;
+
+        } else {
+            leftPaddle.velocityY = 0;
+        }
+                
+
 
         //move and draw the paddle
-        paddle.move();
-        paddle.draw();
+        rightPaddle.move();
+        rightPaddle.draw();
+        leftPaddle.move();
+        leftPaddle.draw();
 
         // Continue the animation
         window.requestAnimationFrame(repeatme);
