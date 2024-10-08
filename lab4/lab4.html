@@ -129,18 +129,17 @@
       move() {
         this.x += this.velocityX;  // Update horizontal position
         this.y += this.velocityY;  // Update vertical position
-        this.velocityY += 0.5;
 
         // If the ball hits the bottom of the canvas
         if (this.y + this.radius >= canvas.height) {
           this.y = canvas.height - this.radius;  // Keep it at the bottom
-          this.velocityY *= -0.8;  // Reverse the velocity (move up)
+          this.velocityY = -this.velocityY;  // Reverse the velocity (move up)
         }
 
         // If the ball hits the top of the canvas, reverse direction again
         if (this.y - this.radius <= 0) {
           this.y = this.radius;  // Keep it at the top
-          this.velocityY *= -.5;  // Reverse the velocity (move down)
+          this.velocityY = -this.velocityY;  // Reverse the velocity (move down)
         }
 
         //fixing issue with ball exiting canvas on left and right sides
