@@ -33,7 +33,7 @@
     constructor(x, y, radius, speed) {
     this.x = x;          // Horizontal position
     this.y = y;          // Vertical position
-    this.radius = radius; // Paddle radius (for the circle)
+    this.radius = radius; // Paddle radius
     this.speed = speed;  // Speed of the paddle's movement
     this.velocityY = 0;  // Vertical velocity
     }
@@ -55,9 +55,9 @@
 
     // Ensure the paddle doesn't go off the top or bottom of the canvas
     if (this.y - this.radius <= 0) {
-      this.y = this.radius; // Top boundary
+      this.y = this.radius; 
     } else if (this.y + this.radius >= canvas.height) {
-      this.y = canvas.height - this.radius; // Bottom boundary
+      this.y = canvas.height - this.radius;
     }
   }
 
@@ -92,33 +92,8 @@
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.stroke();
-
-        // Draw the vertical line
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y - this.radius);
-        ctx.lineTo(this.x, this.y + this.radius);
-        ctx.stroke();
-
-        // Diagonal lines are at 45 degrees from the center
-        var Angle1 = Math.PI / 4;  // 45 degrees in radians
-        var Angle2 = (3 * Math.PI) / 4;  // 135 degrees in radians
-        var diagonalLength = this.radius * 0.8;  // Diagonal lines are a percentage of radius
-
-        // First diagonal line (bottom right to center)
-        var x1 = this.x + diagonalLength * Math.cos(Angle1);
-        var y1 = this.y + diagonalLength * Math.sin(Angle1);
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(x1, y1);
-        ctx.stroke();
-
-        // Second diagonal line (bottom left to center)
-        var x2 = this.x + diagonalLength * Math.cos(Angle2);
-        var y2 = this.y + diagonalLength * Math.sin(Angle2);
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(x2, y2);
+        ctx.fillStyle = "blue";
+        ctx.fill();
         ctx.stroke();
 
       }
@@ -157,8 +132,36 @@
 
 
       }
+     }
+
+     //function to detect collision between ball and paddle
+     function detectCollision(ball, paddle){
+
+    // calculate distance between center of ball and center of paddle
+    const distX = ball.x - paddle.x;
+    const distY = ball.y - paddle.y;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+
+    //check if distance is less than or equal to sum of radius
+
+    return distance <= ball.radius + paddle.radius;
+
+    }
+
+    //function for collision message
+    function showCollisionMessage(){
+
+      ctx.font = "30px Arial";
+      ctx.fillStyle = "red";
+      ctx.fillText("Collision Detected!", canvas.width / 2 - 100, canvas.height / 2);
+
+    //remove message after 0.75 secs
+    setTimeout(function () {
+
+    ctx.clearRect(canvas.width / 2 - 100, canvas.height / 2 - 30, 200, 40);
 
 
+    }, 1000);
 
     }
 
@@ -233,13 +236,15 @@
     
     // Adding mouse functionality for circular paddle
     canvas.addEventListener("mousemove", function (event) {
-  var canvasPosition = canvas.getBoundingClientRect();
-  var mouseY = event.clientY - canvasPosition.top;
-  rightPaddle.moveTo(mouseY); // Just update the y position without subtracting any height
-});
+    var canvasPosition = canvas.getBoundingClientRect();
+    var mouseY = event.clientY - canvasPosition.top;
+    rightPaddle.moveTo(mouseY); // Just update the y position without subtracting any height
+    });
 
 
     // Animation loop
+    let collisionDetected = false;
+
     function repeatme() {
       // Clear the canvas before each new frame
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -283,6 +288,14 @@
       rightPaddle.draw();
       leftPaddle.move();
       leftPaddle.draw();
+
+      //checking for collisions
+      if (!collisionDetected && (detectCollision(ball, rightPaddle) || detectCollision(ball, leftPaddle))) {
+        collisionDetected = true; // Set the collision flag
+        showCollisionMessage(); // Show message if collision detected
+      } else if (!detectCollision(ball, rightPaddle) && !detectCollision(ball, leftPaddle)) {
+        collisionDetected = false; // Reset the collision flag if no collision is detected
+      }
 
       // Continue the animation
       window.requestAnimationFrame(repeatme);
