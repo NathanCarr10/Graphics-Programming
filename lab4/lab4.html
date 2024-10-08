@@ -165,6 +165,15 @@
 
     }
 
+    //function to handle ball and paddle collision
+    function BallPaddleCollision(ball,paddle){
+
+      ball.velocityX = -ball.velocityX; //reversing x velocity
+      ball.velocityY += (Math.random() - 0.5) * 2; // adding random y variation
+
+
+    }
+
     // Create a ball and paddle objects
     var ball = new Ball(50, 10, 1, 2, 10);
     var rightPaddle = new Paddle(550, 150, 25, 2); // radius of 25
@@ -290,11 +299,14 @@
       leftPaddle.draw();
 
       //checking for collisions
-      if (!collisionDetected && (detectCollision(ball, rightPaddle) || detectCollision(ball, leftPaddle))) {
-        collisionDetected = true; // Set the collision flag
-        showCollisionMessage(); // Show message if collision detected
-      } else if (!detectCollision(ball, rightPaddle) && !detectCollision(ball, leftPaddle)) {
-        collisionDetected = false; // Reset the collision flag if no collision is detected
+      if (detectCollision(ball, rightPaddle) || detectCollision(ball, leftPaddle)) {
+        if (!collisionDetected){
+          collisionDetected = true;
+          showCollisionMessage();
+          BallPaddleCollision(ball, detectCollision(ball,rightPaddle) ? rightPaddle : leftPaddle);
+        }
+      } else {
+        collisionDetected = false;
       }
 
       // Continue the animation
