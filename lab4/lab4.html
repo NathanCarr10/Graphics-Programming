@@ -231,15 +231,13 @@
 
     });
 
-    // Adding mouse functionality
+    
+    // Adding mouse functionality for circular paddle
     canvas.addEventListener("mousemove", function (event) {
-
-      var canvasPosition = canvas.getBoundingClientRect();
-      var mouseY = event.clientY - canvasPosition.top;
-      rightPaddle.moveTo(mouseY - rightPaddle.height / 2);
-
-
-    });
+  var canvasPosition = canvas.getBoundingClientRect();
+  var mouseY = event.clientY - canvasPosition.top;
+  rightPaddle.moveTo(mouseY); // Just update the y position without subtracting any height
+});
 
 
     // Animation loop
