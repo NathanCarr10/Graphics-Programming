@@ -91,13 +91,38 @@
 
       // Method to draw the ball on the canvas
       draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "blue";
-        ctx.fill();
-        ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+          ctx.stroke(); 
 
-      }
+          // Draw the vertical line
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y - this.radius);
+          ctx.lineTo(this.x, this.y + this.radius);
+          ctx.stroke();
+
+          // Diagonal lines are at 45 degrees from the center
+          var Angle1 = Math.PI / 4;  // 45 degrees in radians
+          var Angle2 = (3 * Math.PI) / 4;  // 135 degrees in radians
+          var diagonalLength = this.radius * 0.8;  // Diagonal lines are a percentage of radius
+
+          // First diagonal line (bottom right to center)
+          var x1 = this.x + diagonalLength * Math.cos(Angle1);
+          var y1 = this.y + diagonalLength * Math.sin(Angle1);
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(x1, y1);
+          ctx.stroke();
+
+          // Second diagonal line (bottom left to center)
+          var x2 = this.x + diagonalLength * Math.cos(Angle2);
+          var y2 = this.y + diagonalLength * Math.sin(Angle2);
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+
+        }
 
 
 
