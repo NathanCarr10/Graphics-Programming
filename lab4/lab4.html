@@ -122,12 +122,14 @@
         if (this.x - this.radius <= 0) {
 
           this.x = this.radius;
-          this.velocityX = -this.velocityX
+          this.velocityX = -this.velocityX;
+          leftPaddleScore--; //decrement left paddle score
 
         } else if (this.x + this.radius >= canvas.width) {
 
           this.x = canvas.width - this.radius;
           this.velocityX = -this.velocityX;
+          rightPaddleScore--;
 
         }
 
