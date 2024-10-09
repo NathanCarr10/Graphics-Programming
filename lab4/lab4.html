@@ -25,9 +25,10 @@
     var canvas = document.getElementById("canvas-for-ball");
     var ctx = canvas.getContext("2d");
 
-
-
-
+    //score variables for each paddle
+    let rightPaddleScore = 0;
+    let leftPaddleScore = 0;
+    
     // Class Paddle
     class Paddle {
     constructor(x, y, radius, speed) {
@@ -171,8 +172,13 @@
       ball.velocityX = -ball.velocityX; //reversing x velocity
       ball.velocityY += (Math.random() - 0.5) * 2; // adding random y variation
 
-
+      //incrementing score when left and right paddles are hit
+    if (paddle === rightPaddle){
+      rightPaddleScore++;
+    } else if (paddle === leftPaddle){
+      leftPaddleScore++;
     }
+  }
 
     // Create a ball and paddle objects
     var ball = new Ball(50, 10, 1, 2, 10);
@@ -250,6 +256,14 @@
     rightPaddle.moveTo(mouseY); // Just update the y position without subtracting any height
     });
 
+    //function to display scores
+    function displayScores(){
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "black";
+      ctx.fillText("Right Paddle: " + rightPaddleScore, canvas.width - 200, 30);
+      ctx.fillText("Left Paddle: " + leftPaddleScore, 20, 30);
+
+    }
 
     // Animation loop
     let collisionDetected = false;
@@ -308,6 +322,9 @@
       } else {
         collisionDetected = false;
       }
+
+      //Displaying Scores
+      displayScores();
 
       // Continue the animation
       window.requestAnimationFrame(repeatme);
