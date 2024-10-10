@@ -157,9 +157,20 @@
           rightPaddleScore--;
 
         }
+       }
 
+       //function to increase match ball speed * 1.1
+       increaseSpeed(){
+        this.velocityX *= 1.1;
+        this.velocityY *= 0.9;
+       }
 
+      //function to decrease match ball speed * 0.9
+       decreaseSpeed(){
+        this.velocityX *= 0.9;
+        this.velocityY *= 0.9;
       }
+
      }
 
      //function to detect collision between ball and paddle
@@ -272,6 +283,17 @@
         movingLeftPaddleDown = false;
 
       }
+
+    });
+
+    //match ball increases/decreases when "z" and "x" are pressed
+    document.addEventListener("keydown", function(e){
+      if (e.key === "z"){
+        ball.increaseSpeed(); //increase ball speed
+      } else if (e.key === "x"){
+        ball.decreaseSpeed(); //decrease ball speed
+      }
+
 
     });
 
