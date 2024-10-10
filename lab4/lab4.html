@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
   <meta charset="UTF-8">
   <title>Canvas</title>
-
   <style type="text/css">
     body {
       background-color: white;
     }
   </style>
-
 </head>
-
 <body>
 
   <h1> Nathan Carr </h1>
@@ -41,17 +36,17 @@
 
 
 
-      //method to draw paddle
-      draw() {
+    //method to draw paddle
+    draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
-  }
+    }
 
-      //move method for paddle
-      move() {
+    //move method for paddle
+    move() {
     this.y += this.velocityY;
 
     // Ensure the paddle doesn't go off the top or bottom of the canvas
@@ -71,9 +66,9 @@
       this.y = this.radius; // Top boundary
     } else if (this.y + this.radius >= canvas.height) {
       this.y = canvas.height - this.radius; // Bottom boundary
+      }
     }
   }
-}
 
 
 
@@ -81,48 +76,47 @@
 
     // Ball class definition
     class Ball {
-      constructor(x, y, velocityX, velocityY, radius) {
-        this.x = 100;  // Horizontal position
-        this.y = 100;  // Vertical position
-        this.velocityX = velocityX;  // Horizontal velocity
-        this.velocityY = velocityY;  // Vertical velocity
-        this.radius = radius;  // Ball radius
-      }
+    constructor(x, y, velocityX, velocityY, radius) {
+    this.x = 100;  // Horizontal position
+    this.y = 100;  // Vertical position
+    this.velocityX = velocityX;  // Horizontal velocity
+    this.velocityY = velocityY;  // Vertical velocity
+    this.radius = radius;  // Ball radius
+    }
 
-      // Method to draw the ball on the canvas
-      draw() {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-          ctx.stroke(); 
+    // Method to draw the ball on the canvas
+    draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.stroke(); 
 
-          // Draw the vertical line
-          ctx.beginPath();
-          ctx.moveTo(this.x, this.y - this.radius);
-          ctx.lineTo(this.x, this.y + this.radius);
-          ctx.stroke();
+    // Draw the vertical line
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y - this.radius);
+    ctx.lineTo(this.x, this.y + this.radius);
+    ctx.stroke();
 
-          // Diagonal lines are at 45 degrees from the center
-          var Angle1 = Math.PI / 4;  // 45 degrees in radians
-          var Angle2 = (3 * Math.PI) / 4;  // 135 degrees in radians
-          var diagonalLength = this.radius * 0.8;  // Diagonal lines are a percentage of radius
+    // Diagonal lines are at 45 degrees from the center
+    var Angle1 = Math.PI / 4;  // 45 degrees in radians
+    var Angle2 = (3 * Math.PI) / 4;  // 135 degrees in radians
+    var diagonalLength = this.radius * 0.8;  // Diagonal lines are a percentage of radius
 
-          // First diagonal line (bottom right to center)
-          var x1 = this.x + diagonalLength * Math.cos(Angle1);
-          var y1 = this.y + diagonalLength * Math.sin(Angle1);
-          ctx.beginPath();
-          ctx.moveTo(this.x, this.y);
-          ctx.lineTo(x1, y1);
-          ctx.stroke();
+    // First diagonal line (bottom right to center)
+    var x1 = this.x + diagonalLength * Math.cos(Angle1);
+    var y1 = this.y + diagonalLength * Math.sin(Angle1);
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(x1, y1);
+    ctx.stroke();
 
-          // Second diagonal line (bottom left to center)
-          var x2 = this.x + diagonalLength * Math.cos(Angle2);
-          var y2 = this.y + diagonalLength * Math.sin(Angle2);
-          ctx.beginPath();
-          ctx.moveTo(this.x, this.y);
-          ctx.lineTo(x2, y2);
-          ctx.stroke();
-
-        }
+    // Second diagonal line (bottom left to center)
+    var x2 = this.x + diagonalLength * Math.cos(Angle2);
+    var y2 = this.y + diagonalLength * Math.sin(Angle2);
+    ctx.beginPath();
+    ctx.moveTo(this.x, this.y);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    }
 
 
 
@@ -145,17 +139,14 @@
 
         //fixing issue with ball exiting canvas on left and right sides
         if (this.x - this.radius <= 0) {
-
           this.x = this.radius;
           this.velocityX = -this.velocityX;
           leftPaddleScore--; //decrement left paddle score
 
         } else if (this.x + this.radius >= canvas.width) {
-
           this.x = canvas.width - this.radius;
           this.velocityX = -this.velocityX;
           rightPaddleScore--;
-
         }
        }
 
@@ -171,7 +162,7 @@
         this.velocityY *= 0.9;
       }
 
-     }
+  }
 
      //function to detect collision between ball and paddle
      function detectCollision(ball, paddle){
@@ -182,10 +173,9 @@
     const distance = Math.sqrt(distX * distX + distY * distY);
 
     //check if distance is less than or equal to sum of radius
-
     return distance <= ball.radius + paddle.radius;
 
-    }
+  }
 
     //function for collision message
     function showCollisionMessage(){
@@ -196,26 +186,22 @@
 
     //remove message after 0.75 secs
     setTimeout(function () {
-
     ctx.clearRect(canvas.width / 2 - 100, canvas.height / 2 - 30, 200, 40);
-
-
     }, 750);
 
-    }
+  }
 
     //function to handle ball and paddle collision
     function BallPaddleCollision(ball,paddle){
-
       ball.velocityX = -ball.velocityX; //reversing x velocity
       ball.velocityY += (Math.random() - 0.5) * 2; // adding random y variation
 
-      //incrementing score when left and right paddles are hit
-    if (paddle === rightPaddle){
+     //incrementing score when left and right paddles are hit
+      if (paddle === rightPaddle){
       rightPaddleScore++;
-    } else if (paddle === leftPaddle){
+     } else if (paddle === leftPaddle){
       leftPaddleScore++;
-    }
+     }
   }
 
     // Create a ball and paddle objects
@@ -233,58 +219,33 @@
     //Right Paddle (controlled with "ArrowUp" and "ArrowDown" keys)
     document.addEventListener("keydown", function (e) {
       if (e.key === "ArrowUp") {
-
         movingUp = true;
-
       } else if (e.key === "ArrowDown") {
-
         movingDown = true;
-
       }
 
       //Left Paddle with W & S keys
       if (e.key === "w" || e.key === "W") {
-
         movingLeftPaddleUp = true;
-
-
       } else if (e.key === "s" || e.key === "S") {
-
         movingLeftPaddleDown = true;
-
       }
-
-
-
-
-    });
+      });
 
 
 
     document.addEventListener("keyup", function (e) {
-
       if (e.key === "ArrowUp") {
-
         movingUp = false;
-
       } else if (e.key === "ArrowDown") {
-
         movingDown = false;
-
       }
-
       if (e.key === "w" || e.key === "W") {
-
         movingLeftPaddleUp = false;
-
-
       } else if (e.key === "s" || e.key === "S") {
-
         movingLeftPaddleDown = false;
-
       }
-
-    });
+      });
 
     //match ball increases/decreases when "z" and "x" are pressed
     document.addEventListener("keydown", function(e){
@@ -293,8 +254,6 @@
       } else if (e.key === "x"){
         ball.decreaseSpeed(); //decrease ball speed
       }
-
-
     });
 
     
@@ -311,44 +270,33 @@
       ctx.fillStyle = "black";
       ctx.fillText("Right Paddle: " + rightPaddleScore, canvas.width - 200, 30);
       ctx.fillText("Left Paddle: " + leftPaddleScore, 20, 30);
-
     }
 
     // Animation loop
     let collisionDetected = false;
 
     function repeatme() {
-      // Clear the canvas before each new frame
+    // Clear the canvas before each new frame
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Move and draw the ball
+    // Move and draw the ball
       ball.move();
       ball.draw();
 
 
       //moving paddle from keyboard inputs
       if (movingUp) {
-
         rightPaddle.velocityY = -rightPaddle.speed;
-
       } else if (movingDown) {
-
         rightPaddle.velocityY = rightPaddle.speed;
-
       } else {
-
         rightPaddle.velocityY = 0
-
       }
 
       if (movingLeftPaddleUp) {
-
         leftPaddle.velocityY = -leftPaddle.speed;
-
       } else if (movingLeftPaddleDown) {
-
         leftPaddle.velocityY = leftPaddle.speed;
-
       } else {
         leftPaddle.velocityY = 0;
       }
