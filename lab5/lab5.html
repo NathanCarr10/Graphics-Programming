@@ -21,6 +21,9 @@
             const material = new THREE.MeshLambertMaterial({ color: color, wireframe: false});
             const geometry = new THREE.SphereGeometry(radius,32,32);
             this.mesh = new THREE.Mesh(geometry, material);
+
+            //Enabling sphere to cast shadow
+            this.mesh.castShadow = true;
             
             //movement variable
             this.direction = 1;
@@ -32,6 +35,7 @@
             addToScene(scene){
                 scene.add(this.mesh);
             }
+
             //updating the sphere position and rotation
             update(){
                 //rotating sphere
@@ -42,7 +46,7 @@
                 this.mesh.position.x += this.direction * this.speed;
 
                 //reverse direction when sphere reaches movement limit
-                if (this.mesh.position.x > this.limit || this.mesh.position < -this.limit){
+                if (this.mesh.position.x > this.limit || this.mesh.position.x < -this.limit){
                     this.direction *= -1;
                 }
             }
@@ -56,22 +60,36 @@
         // Create a camera with specified properties.
         const camera = new THREE.PerspectiveCamera(76, window.innerWidth / window.innerHeight, 0.1, 1000);
         // Set camera position
-        camera.position.z = 80;
+        camera.position.set(0,30,70);
 
         // Implement renderer - Create a WebGL renderer for rendering the scene.
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
         
         //creating sphere object and adding to scene
         const mySphere = new Sphere();
         mySphere.addToScene(scene);
+
+        //creating the plane
+        const planeGeometry = new THREE.PlaneGeometry(200,200);
+        const planeMaterial = new THREE.MeshLambertMaterial({color: 0x808080});
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = -Math.PI / 2; //rotate plane to lie flat
+        plane.position.y = -10; //position plane below the sphere
+        plane.receiveShadow = true;
+        scene.add(plane);
         
         //adding a spotlight
         const spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(20,20,20);
+        spotLight.position.set(20,50,20);
         spotLight.castShadow = true;
         scene.add(spotLight);
+
+        //adding a CameraHelper
+        const cameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
+        scene.add(cameraHelper);
 
         //Adding Ambiant Light to sphere to illuminate it
         const ambientLight = new THREE.AmbientLight(0X404040, 0.5);
