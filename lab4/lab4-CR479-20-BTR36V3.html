@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas</title>
+
+  <style type="text/css">
+    body {
+      background-color: white;
+    }
+  </style>
+
+</head>
+
+<body>
+  
+  <h1> Nathan Carr </h1>
+  
+  <canvas id="canvas-for-ball" width="600" height="400" style="border:1px solid #000000"></canvas>
+
+  <script type="text/javascript">
+    // Get a handle to the element with id canvas-for-ball.
+    var canvas = document.getElementById("canvas-for-ball");
+    var ctx = canvas.getContext("2d");
+
+
+
+
+    // Class Paddle
+      class Paddle{
+        constructor(x, y, velocityX, velocityY, radius) {
+        this.x = x;  // Horizontal position
+        this.y = y;  // Vertical position
+        this.velocityX = velocityX;  // Horizontal velocity
+        this.velocityY = velocityY;  // Vertical velocity
+        this.radius = radius;  // Ball radius
+      }
+
+
+      //method to draw paddle ball
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = ("red");
+        ctx.fill();
+        ctx.stroke(); 
+      }
+
+      
+      //move method for paddle
+      move(){
+
+      this.y += this.velocityY;
+
+        //Bouncing paddle off top and bottom of canvas
+      if (this.y <= 0){
+
+        this.y= 0;
+
+      } else if (this.y + this.height >= canvas.height){
+
+        this.y = canvas.height - this.height;
+
+      }
+
+    }
+
+        //moving paddle to y coordinate for mouse movement
+        moveTo(y){
+          this.y = y;
+
+        // if statement to stop paddle going off canvas
+        if (this.y <= 0){
+
+          this.y = 0;
+
+        } else if (this.y + this.height >= canvas.height){
+
+          this.y = canvas.height - this.height;
+
+        }
+
+
+      }
+    
+    }
+
+    
+
+
+
+    // Ball class definition
+    class Ball {
+      constructor(x, y, velocityX, velocityY, radius) {
+        this.x = x;  // Horizontal position
+        this.y = y;  // Vertical position
+        this.velocityX = velocityX;  // Horizontal velocity
+        this.velocityY = velocityY;  // Vertical velocity
+        this.radius = radius;  // Ball radius
+      }
+
+      // Method to draw the ball on the canvas
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = ("blue");
+        ctx.fill();
+        ctx.stroke(); 
+      }
+
+      
+
+      // Method to move the ball based on its velocity
+      move() {
+                this.x += this.velocityX;  // Update horizontal position
+                this.y += this.velocityY;  // Update vertical position
+
+        // If the ball hits the bottom of the canvas
+              if (this.y + this.radius >= canvas.height) {
+                this.y = canvas.height - this.radius;  // Keep it at the bottom
+                this.velocityY = -this.velocityY;  // Reverse the velocity (move up)
+        }
+
+        // If the ball hits the top of the canvas, reverse direction again
+            if (this.y - this.radius <= 0) {
+          this.y = this.radius;  // Keep it at the top
+          this.velocityY = -this.velocityY;  // Reverse the velocity (move down)
+        }
+
+        //fixing issue with ball exiting canvas on left and right sides
+          if (this.x - this.radius <= 0){
+
+              this.x = this.radius;
+              this.velocityX = -this.velocityX
+
+          } else if (this.x + this.radius >= canvas.width){
+
+            this.x = canvas.width - this.radius;
+            this.velocityX = -this.velocityX;
+
+          }
+
+
+        }
+
+
+      
+    }
+
+    // Create a ball and paddle objects
+    var ball = new Ball(50, 10, 1, 2, 10);
+    var rightPaddle = new Paddle(50, 10, 1, 2, 10);
+    var leftPaddle = new Paddle(50, 10, 1, 2, 10);
+
+    // Track paddle movement
+    var movingUp = false;
+    var movingDown = false;
+    var movingLeftPaddleUp = false;
+    var movingLeftPaddleDown = false;
+
+    //Keyboard functionality
+    //Right Paddle (controlled with "ArrowUp" and "ArrowDown" keys)
+    document.addEventListener("keydown", function (e){
+      if (e.key === "ArrowUp"){
+
+        movingUp = true;
+
+      } else if (e.key === "ArrowDown"){
+
+        movingDown = true;
+
+      }
+
+      //Left Paddle with W & S keys
+      if (e.key === "w" || e.key === "W"){
+
+        movingLeftPaddleUp = true;
+
+
+      } else if (e.key === "s" || e.key === "S"){
+
+        movingLeftPaddleDown = true;
+
+      }
+
+
+
+
+    });
+
+
+
+    document.addEventListener("keyup", function (e){
+
+      if (e.key === "ArrowUp"){
+
+        movingUp = false;
+
+      } else if (e.key === "ArrowDown"){
+
+        movingDown = false;
+
+      }
+
+      if (e.key === "w" || e.key === "W"){
+
+        movingLeftPaddleUp = false;
+
+
+      } else if (e.key === "s" || e.key === "S"){
+
+        movingLeftPaddleDown = false;
+
+        }
+
+    });
+
+    // Adding mouse functionality
+    canvas.addEventListener("mousemove", function(event){
+
+      var canvasPosition = canvas.getBoundingClientRect();
+      var mouseY = event.clientY - canvasPosition.top;
+      rightPaddle.moveTo(mouseY - rightPaddle.height /2);
+
+
+    });
+    
+
+    // Animation loop
+    function repeatme() {
+      // Clear the canvas before each new frame
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Move and draw the ball
+      ball.move();
+      ball.draw();
+
+
+      //moving paddle from keyboard inputs
+      if (movingUp){
+
+        rightPaddle.velocityY = -rightPaddle.speed;
+
+      } else if (movingDown){
+
+        rightPaddle.velocityY = rightPaddle.speed;
+
+      } else {
+
+        rightPaddle.velocityY = 0
+
+      }
+
+      if (movingLeftPaddleUp) {
+
+          leftPaddle.velocityY = -leftPaddle.speed;
+
+        } else if (movingLeftPaddleDown) {
+
+          leftPaddle.velocityY = leftPaddle.speed;
+
+      } else {
+          leftPaddle.velocityY = 0;
+      }
+              
+
+
+      //move and draw the paddle
+      rightPaddle.move();
+      rightPaddle.draw();
+      leftPaddle.move();
+      leftPaddle.draw();
+
+      // Continue the animation
+      window.requestAnimationFrame(repeatme);
+    }
+
+    // Start the animation
+    repeatme();
+  </script>
+
+</body>
+
+</html>
