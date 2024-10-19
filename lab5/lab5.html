@@ -1,128 +1,131 @@
 <!DOCTYPE html>
 <html>
-<!--Import Three.js CDN-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!--Import Three.js CDN-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title></title>
-    <style type="text/css">
-    </style>
-</head>
+    <style type="text/css"></style>
+  </head>
 
-<body>
-    <h1> Nathan Carr </h1>
+  <body>
+    <h1>Nathan Carr</h1>
     <script type="text/javascript">
+      //Creating the Sphere class
+      class Sphere {
+        constructor(color = 0xffff00, radius = 10) {
+          //sphere geomerty and material
+          const material = new THREE.MeshLambertMaterial({
+            color: color,
+            wireframe: false,
+          });
+          const geometry = new THREE.SphereGeometry(radius, 32, 32);
+          this.mesh = new THREE.Mesh(geometry, material);
 
-        //Creating the Sphere class
-        class Sphere{
-            constructor(color = 0xffff00, radius = 10){
-            //sphere geomerty and material
-            const material = new THREE.MeshLambertMaterial({ color: color});
-            const geometry = new THREE.SphereGeometry(radius,32,32);
-            this.mesh = new THREE.Mesh(geometry, material);
+          //Enabling sphere to cast shadow
+          this.mesh.castShadow = true;
 
-            //Enabling sphere to cast shadow
-            this.mesh.castShadow = true;
-            
-            //movement variable
-            this.mesh.position.set(0,50,0); //start in the air
-            this.velocityY = 0; //vertical velocity
-            this.gravity = -0.3; //simulating gravity
-            this.bounce = 0.8; //reducing speed after bounce
-            this.radius = radius; //storing sphere radius to be used in collision if statement
+          //movement variable
+          this.mesh.position.set(0, 50, 0); //start in the air
+          this.velocityY = 0; //vertical velocity
+          this.gravity = -0.3; //simulating gravity
+          this.bounce = 0.8; //reducing speed after bounce
+          this.radius = radius; //storing sphere radius to be used in collision if statement
 
-            //horizontal movement variables
-            this.directionX = 1; // 1 for right, -1 for left
-            this.speedX = 0.2; //horizontal speed
-            this.limitX = 50; //boundary of plane
-
-            }
-
-            //add sphere to scene
-            addToScene(scene){
-                scene.add(this.mesh);
-            }
-
-            //updating the sphere position and rotation
-            update(){
-                //Applying gravity to vertical velocity
-                this.velocityY += this.gravity;
-                this.mesh.position.y += this.velocityY;
-
-                //check for collision with plane
-                if (this.mesh.position.y <= -10 + this.radius){
-                    this.mesh.position.y = -10 + this.radius;
-                    this.velocityY *= -this.bounce; // reverse velocity for bounce
-                }
-
-                //moving sphere left and right
-                this.mesh.position.x += this.directionX * this.speedX;
-
-                //reverse direction if sphere hits boundary of plane
-                if(this.mesh.position.x > this.limitX || this.mesh.position.x < -this.limitX){
-                    this.directionX *= -1;
-                }
-
-                //rotating sphere
-                this.mesh.rotation.x += 0.05;
-                this.mesh.rotation.y += 0.05;
-            }
-
+          //horizontal movement variables
+          this.directionX = 1; // 1 for right, -1 for left
+          this.speedX = 0.2; //horizontal speed
+          this.limitX = 50; //boundary of plane
         }
 
-        
-        // Implement scene - Create a Three.js scene to hold objects.
-        const scene = new THREE.Scene();
-
-        // Create a camera with specified properties.
-        const camera = new THREE.PerspectiveCamera(76, window.innerWidth / window.innerHeight, 0.1, 1000);
-        // Set camera position
-        camera.position.set(0,50,100);
-
-        // Implement renderer - Create a WebGL renderer for rendering the scene.
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        document.body.appendChild(renderer.domElement);
-        
-        //creating sphere object and adding to scene
-        const mySphere = new Sphere();
-        mySphere.addToScene(scene);
-
-        //creating the plane
-        const planeGeometry = new THREE.PlaneGeometry(200,200);
-        const planeMaterial = new THREE.MeshLambertMaterial({color: 0x808080});
-        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.rotation.x = -Math.PI / 2; //rotate plane to lie flat
-        plane.position.y = -10; //position plane below the sphere
-        plane.receiveShadow = true;
-        scene.add(plane);
-        
-        //adding a spotlight
-        const spotLight = new THREE.SpotLight(0xffffff);
-        spotLight.position.set(20,60,20);
-        spotLight.castShadow = true;
-        scene.add(spotLight);
-
-        //adding a CameraHelper
-        const cameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
-        scene.add(cameraHelper);
-
-        //Adding Ambiant Light to sphere to illuminate it
-        const ambientLight = new THREE.AmbientLight(0X404040, 0.5);
-        scene.add(ambientLight);
-
-    
-        //animate function
-        function animate(){
-            mySphere.update();
-
-            renderer.render (scene, camera);
+        //add sphere to scene
+        addToScene(scene) {
+          scene.add(this.mesh);
         }
-        renderer.setAnimationLoop(animate);
 
+        //updating the sphere position and rotation
+        update() {
+          //Applying gravity to vertical velocity
+          this.velocityY += this.gravity;
+          this.mesh.position.y += this.velocityY;
+
+          //check for collision with plane
+          if (this.mesh.position.y <= -10 + this.radius) {
+            this.mesh.position.y = -10 + this.radius;
+            this.velocityY *= -this.bounce; // reverse velocity for bounce
+          }
+
+          //moving sphere left and right
+          this.mesh.position.x += this.directionX * this.speedX;
+
+          //reverse direction if sphere hits boundary of plane
+          if (
+            this.mesh.position.x > this.limitX ||
+            this.mesh.position.x < -this.limitX
+          ) {
+            this.directionX *= -1;
+          }
+
+          //rotating sphere
+          this.mesh.rotation.x += 0.05;
+          this.mesh.rotation.y += 0.05;
+        }
+      }
+
+      // Implement scene - Create a Three.js scene to hold objects.
+      const scene = new THREE.Scene();
+
+      // Create a camera with specified properties.
+      const camera = new THREE.PerspectiveCamera(
+        76,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      // Set camera position
+      camera.position.set(0, 50, 100);
+
+      // Implement renderer - Create a WebGL renderer for rendering the scene.
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.shadowMap.enabled = true;
+      document.body.appendChild(renderer.domElement);
+
+      //creating sphere object and adding to scene
+      const mySphere = new Sphere();
+      mySphere.addToScene(scene);
+
+      //creating the plane
+      const planeGeometry = new THREE.PlaneGeometry(200, 200);
+      const planeMaterial = new THREE.MeshLambertMaterial({ color: 0x808080 });
+      const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      plane.rotation.x = -Math.PI / 2; //rotate plane to lie flat
+      plane.position.y = -10; //position plane below the sphere
+      plane.receiveShadow = true;
+      scene.add(plane);
+
+      //adding a spotlight
+      const spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(20, 60, 20);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+
+      //adding a CameraHelper
+      const cameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
+      scene.add(cameraHelper);
+
+      //Adding Ambiant Light to sphere to illuminate it
+      const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+      scene.add(ambientLight);
+
+      //animate function
+      function animate() {
+        mySphere.update();
+
+        renderer.render(scene, camera);
+      }
+      renderer.setAnimationLoop(animate);
     </script>
-</body>
-
+  </body>
 </html>
