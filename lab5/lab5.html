@@ -14,11 +14,11 @@
     <script type="text/javascript">
       //Creating the Sphere class
       class Sphere {
-        constructor(color = 0xffff00, radius = 10) {
+        constructor(color = 0xffff00, radius = 10, initialX = 0, initialY = 50) {
           //sphere geomerty and material
           const material = new THREE.MeshLambertMaterial({
             color: color,
-            wireframe: false,
+            wireframe: true, // adding a wireframe to sphere object
           });
           const geometry = new THREE.SphereGeometry(radius, 32, 32);
           this.mesh = new THREE.Mesh(geometry, material);
@@ -27,7 +27,7 @@
           this.mesh.castShadow = true;
 
           //movement variable
-          this.mesh.position.set(0, 50, 0); //start in the air
+          this.mesh.position.set(initialX, initialY, 0); //start in the air
           this.velocityY = 0; //vertical velocity
           this.gravity = -0.3; //simulating gravity
           this.bounce = 0.8; //reducing speed after bounce
@@ -73,6 +73,15 @@
         }
       }
 
+      //adding a collison function for both spheres
+      function detectCollision(sphere1, sphere2){
+        const dx = sphere1.mesh.position.x - sphere2.mesh.position.x;
+        const dy = sphere1.mesh.position.y - sphere2.mesh.position.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        return distance < (sphere1.radius + sphere2.radius);
+      }
+
       // Implement scene - Create a Three.js scene to hold objects.
       const scene = new THREE.Scene();
 
@@ -93,8 +102,10 @@
       document.body.appendChild(renderer.domElement);
 
       //creating sphere object and adding to scene
-      const mySphere = new Sphere();
-      mySphere.addToScene(scene);
+      const sphere1 = new Sphere(0xffff00, 10, -20, 50); //yellow sphere
+      const sphere2 = new Sphere(0xff0000, 10, 20, 30); //red sphere
+      sphere1.addToScene(scene);
+      sphere2.addToScene(scene);
 
       //creating the plane
       const planeGeometry = new THREE.PlaneGeometry(200, 200);
@@ -121,7 +132,8 @@
 
       //animate function
       function animate() {
-        mySphere.update();
+        sphere1.update();
+        sphere2.update();
 
         renderer.render(scene, camera);
       }
