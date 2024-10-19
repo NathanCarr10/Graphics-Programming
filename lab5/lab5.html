@@ -14,7 +14,12 @@
     <script type="text/javascript">
       //Creating the Sphere class
       class Sphere {
-        constructor(color = 0xffff00, radius = 10, initialX = 0, initialY = 50) {
+        constructor(
+          color = 0xffff00,
+          radius = 10,
+          initialX = 0,
+          initialY = 50
+        ) {
           //sphere geomerty and material
           const material = new THREE.MeshLambertMaterial({
             color: color,
@@ -74,12 +79,12 @@
       }
 
       //adding a collison function for both spheres
-      function detectCollision(sphere1, sphere2){
+      function detectCollision(sphere1, sphere2) {
         const dx = sphere1.mesh.position.x - sphere2.mesh.position.x;
         const dy = sphere1.mesh.position.y - sphere2.mesh.position.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        return distance < (sphere1.radius + sphere2.radius);
+        return distance < sphere1.radius + sphere2.radius;
       }
 
       // Implement scene - Create a Three.js scene to hold objects.
@@ -136,9 +141,9 @@
         sphere2.update();
 
         //check for collision and reverse horizontal direction if collided
-        if (detectCollision(sphere1,sphere2)){
-            sphere1.directionX *= -1;
-            sphere2.directionX *= -1;
+        if (detectCollision(sphere1, sphere2)) {
+          sphere1.directionX *= -1;
+          sphere2.directionX *= -1;
         }
 
         renderer.render(scene, camera);
