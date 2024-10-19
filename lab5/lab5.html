@@ -135,6 +135,12 @@
         sphere1.update();
         sphere2.update();
 
+        //check for collision and reverse horizontal direction if collided
+        if (detectCollision(sphere1,sphere2)){
+            sphere1.directionX *= -1;
+            sphere2.directionX *= -1;
+        }
+
         renderer.render(scene, camera);
       }
       renderer.setAnimationLoop(animate);
