@@ -25,10 +25,6 @@
       //plot CO2 graph
       function plotCO2Data(data){
 
-         var x = d3.scaleTime()
-                  .domain(d3.extent (data, function(d){return parseDate(d["Date"]);}))
-                  .range([0, width]);
-
          //Setup SVG sizes and margins
          var margin = { top: 50, right: 50, bottom: 50, left: 50},
              width = 900 - margin.left - margin.right,
@@ -39,7 +35,7 @@
                   .domain(d3.extent(data, function(d){ return (d["years_before_2023"]); })) // C02 values
                   .range([0, width]);
          var y = d3.scaleLinear()
-                  .domain(d3.extent(data, function(d){ return d["co2_ppmv"]; }))
+                  .domain(d3.extent(data, function(d){ return (d["co2_ppmv"]); }))
                   .range([height, 0]); //seems backwards because svg y is down 
                   
          //Axes
@@ -50,7 +46,29 @@
          var yAxis = d3.axisLeft(y)
          .ticks(3);
 
-         
+         var valueLine = d3.line() //draw line - map, x,y, coords for each
+         .x(function(d){return x(d["years_before_2023"])})
+         .y(function(d){return y(d["co2_ppmv"])});
+
+         //Drawing the above in SVG
+         var svg = d3.select('body')
+            .append("svg")
+               .attr("width", width + margin.left + margin.right)
+               .attr("height", height + margin.top + margin.bottom)
+
+         //Adding the axes
+         svg.append('g') // append a <g> - group element
+            .attr('class', 'x axis')
+            .call(xAxis);
+
+         svg.append('g')
+            .attr('class', 'y axis')
+            .call(yAxis);
+
+         //Drawing the path
+         svg.append("path") //Add the valueline path
+         .attr("d", valueLine(data));
+
       }
    </script>
 </body>
