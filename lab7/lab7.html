@@ -17,20 +17,40 @@
          //print to console
          console.log(data);
          data = data.slice(0, 2500);
-         
+
          //call function
          plotCO2Data(data);
       });
 
       //plot CO2 graph
       function plotCO2Data(data){
+
+         var x = d3.scaleTime()
+                  .domain(d3.extent (data, function(d){return parseDate(d["Date"]);}))
+                  .range([0, width]);
+
          //Setup SVG sizes and margins
          var margin = { top: 50, right: 50, bottom: 50, left: 50},
              width = 900 - margin.left - margin.right,
              height = 670 - margin.top - margin.bottom;
 
          // Create x and y scales for Interpolated value (x-axis) and (y-axis)
+         var x = d3.scaleLinear()
+                  .domain(d3.extent(data, function(d){ return (d["years_before_2023"]); })) // C02 values
+                  .range([0, width]);
+         var y = d3.scaleLinear()
+                  .domain(d3.extent(data, function(d){ return d["co2_ppmv"]; }))
+                  .range([height, 0]); //seems backwards because svg y is down 
+                  
+         //Axes
+         //x is the d3.scaleTime()
+         var xAxis = d3.axisBottom(x)
+         .ticks(3);
+         
+         var yAxis = d3.axisLeft(y)
+         .ticks(3);
 
+         
       }
    </script>
 </body>
