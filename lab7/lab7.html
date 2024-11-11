@@ -56,10 +56,16 @@
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
 
+            .append("g")
+            //not necessary but adds an offset so that numeric values are visable
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
          //Adding the axes
          svg.append('g') // append a <g> - group element
             .attr('class', 'x axis')
             .call(xAxis);
+            
 
          svg.append('g')
             .attr('class', 'y axis')
