@@ -13,7 +13,7 @@
    <h1>Nathan Carr</h1>
    <script type="text/javascript">
       //JSON call to api data
-      $.getJSON("https://tinyurl.com/k4chnujx",function (data){
+      $.getJSON("https://tinyurl.com/k4chnujx", function (data) {
          //print to console
          console.log(data);
          data = data.slice(0, 2500);
@@ -23,38 +23,38 @@
       });
 
       //plot CO2 graph
-      function plotCO2Data(data){
+      function plotCO2Data(data) {
 
          //Setup SVG sizes and margins
-         var margin = { top: 50, right: 50, bottom: 50, left: 50},
-             width = 900 - margin.left - margin.right,
-             height = 670 - margin.top - margin.bottom;
+         var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+            width = 900 - margin.left - margin.right,
+            height = 670 - margin.top - margin.bottom;
 
          // Create x and y scales for Interpolated value (x-axis) and (y-axis)
          var x = d3.scaleLinear()
-                  .domain(d3.extent(data, function(d){ return (d["years_before_2023"]); })) // C02 values
-                  .range([0, width]);
+            .domain(d3.extent(data, function (d) { return (d["years_before_2023"]); })) // C02 values
+            .range([0, width]);
          var y = d3.scaleLinear()
-                  .domain(d3.extent(data, function(d){ return (d["co2_ppmv"]); }))
-                  .range([height, 0]); //seems backwards because svg y is down 
-                  
+            .domain(d3.extent(data, function (d) { return (d["co2_ppmv"]); }))
+            .range([height, 0]); //seems backwards because svg y is down 
+
          //Axes
          //x is the d3.scaleTime()
          var xAxis = d3.axisBottom(x)
-         .ticks(3);
-         
+            .ticks(3);
+
          var yAxis = d3.axisLeft(y)
-         .ticks(3);
+            .ticks(3);
 
          var valueLine = d3.line() //draw line - map, x,y, coords for each
-         .x(function(d){return x(d["years_before_2023"])})
-         .y(function(d){return y(d["co2_ppmv"])});
+            .x(function (d) { return x(d["years_before_2023"]) })
+            .y(function (d) { return y(d["co2_ppmv"]) });
 
          //Drawing the above in SVG
          var svg = d3.select('body')
             .append("svg")
-               .attr("width", width + margin.left + margin.right)
-               .attr("height", height + margin.top + margin.bottom)
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
 
          //Adding the axes
          svg.append('g') // append a <g> - group element
@@ -67,7 +67,7 @@
 
          //Drawing the path
          svg.append("path") //Add the valueline path
-         .attr("d", valueLine(data));
+            .attr("d", valueLine(data));
 
       }
    </script>
