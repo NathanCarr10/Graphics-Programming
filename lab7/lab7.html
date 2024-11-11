@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
- <head>
- <title>D3.js Demo</title>
- <meta charset="UTF-8">
- <style type="text/css"></style>
- </head>
- <body>
-    <h1>Nathan Carr</h1>
- <script type="text/javascript"></script>
- </body>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
+
+<head>
+   <title>D3.js Demo</title>
+   <meta charset="UTF-8">
+   <style type="text/css"></style>
+</head>
+
+<body>
+   <h1>Nathan Carr</h1>
+   <script type="text/javascript">
+      //JSON call to api data
+      $.getJSON("https://tinyurl.com/k4chnujx",function (data){
+         //print to console
+         console.log(data);
+         data = data.slice(0, 2500);
+         
+         //call function
+         plotCO2Data(data);
+      });
+
+      //plot CO2 graph
+      function plotCO2Data(data){
+         //Setup SVG sizes and margins
+         var margin = { top: 50, right: 50, bottom: 50, left: 50},
+             width = 900 - margin.left - margin.right,
+             height = 670 - margin.top - margin.bottom;
+
+         // Create x and y scales for Interpolated value (x-axis) and (y-axis)
+
+      }
+   </script>
+</body>
+
 </html>
