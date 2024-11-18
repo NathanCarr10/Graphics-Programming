@@ -35,7 +35,7 @@ gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # Defining columns and rows
 ncols = 2
-nrows = 2
+nrows = 3
 
 # Original image
 plt.subplot(nrows, ncols,1),plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -53,10 +53,19 @@ plt.title('Blurred Image 3x3'), plt.xticks([]), plt.yticks([])
 plt.subplot(nrows, ncols,4),plt.imshow(cv2.cvtColor(BlurredImage1, cv2.COLOR_BGR2RGB))
 plt.title('Blurred Image 13x13'), plt.xticks([]), plt.yticks([])
 
-plt.show()
+# Sobal Code
+sobelHorizontal = cv2.Sobel(gray_image,cv2.CV_64F,1,0,ksize=5) # x dir
+sobelVertical = cv2.Sobel(gray_image,cv2.CV_64F,0,1,ksize=5) # y dir
 
-sobelHorizontal = cv2.Sobel(imgIn,cv2.CV_64F,1,0,ksize=5) # x dir
-sobelVertical = cv2.Sobel(imgIn,cv2.CV_64F,0,1,ksize=5) # y dir
+# Sobal Image 1
+plt.subplot(nrows, ncols,5),plt.imshow(sobelHorizontal, cmap = 'gray')
+plt.title('Sobal Image 1'), plt.xticks([]), plt.yticks([])
+
+# Sobal Image 2
+plt.subplot(nrows, ncols,6),plt.imshow(sobelVertical, cmap = 'gray')
+plt.title('Sobal Image 2'), plt.xticks([]), plt.yticks([])
+
+plt.show()
 
 # Keep image on screen
 # cv2.waitKey(0)  
