@@ -1,84 +1,131 @@
 <!DOCTYPE html>
 <html>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
 
-<head>
-   <title>D3.js Demo</title>
-   <meta charset="UTF-8">
-   <style type="text/css"></style>
-</head>
+  <head>
+    <title>D3.js Demo</title>
+    <meta charset="UTF-8" />
+    <style type="text/css"></style>
+  </head>
 
-<body>
-   <h1>Nathan Carr</h1>
-   <script type="text/javascript">
+  <body>
+    <h1>Nathan Carr</h1>
+    <script type="text/javascript">
       //JSON call to api data
       $.getJSON("https://tinyurl.com/k4chnujx", function (data) {
-         //print to console
-         console.log(data);
-         data = data.slice(0, 2500);
+        //print to console
+        console.log(data);
+        data = data.slice(0, 2500);
 
-         //call function
-         plotCO2Data(data);
+        // Extract chart title from API metadata
+        var chartTitle = "CO2 Concentration Over Time";
+        if (data.length > 0 && data[0].source) {
+          chartTitle = "Source: " + data[0].source;
+        }
+
+        //call function
+        plotCO2Data(data);
       });
 
       //plot CO2 graph
-      function plotCO2Data(data) {
+      function plotCO2Data(data, chartTitle) {
+        //Setup SVG sizes and margins
+        var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+          width = 900 - margin.left - margin.right,
+          height = 670 - margin.top - margin.bottom;
 
-         //Setup SVG sizes and margins
-         var margin = { top: 50, right: 50, bottom: 50, left: 50 },
-            width = 900 - margin.left - margin.right,
-            height = 670 - margin.top - margin.bottom;
+        // Create x and y scales for Interpolated value (x-axis) and (y-axis)
+        var x = d3
+          .scaleLinear()
+          .domain(
+            d3.extent(data, function (d) {
+              return d["years_before_2023"];
+            })
+          ) // C02 values
+          .range([0, width]);
+        var y = d3
+          .scaleLinear()
+          .domain(
+            d3.extent(data, function (d) {
+              return d["co2_ppmv"];
+            })
+          )
+          .range([height, 0]);
 
-         // Create x and y scales for Interpolated value (x-axis) and (y-axis)
-         var x = d3.scaleLinear()
-            .domain(d3.extent(data, function (d) { return (d["years_before_2023"]); })) // C02 values
-            .range([0, width]);
-         var y = d3.scaleLinear()
-            .domain(d3.extent(data, function (d) { return (d["co2_ppmv"]); }))
-            .range([height, 0]); //seems backwards because svg y is down 
+        //Axes
+        //x is the d3.scaleTime()
+        var xAxis = d3.axisBottom(x).ticks(3);
 
-         //Axes
-         //x is the d3.scaleTime()
-         var xAxis = d3.axisBottom(x)
-            .ticks(3);
+        var yAxis = d3.axisLeft(y).ticks(3);
 
-         var yAxis = d3.axisLeft(y)
-            .ticks(3);
+        var valueLine = d3
+          .line() //draw line - map, x,y, coords for each
+          .x(function (d) {
+            return x(d["years_before_2023"]);
+          })
+          .y(function (d) {
+            return y(d["co2_ppmv"]);
+          });
 
-         var valueLine = d3.line() //draw line - map, x,y, coords for each
-            .x(function (d) { return x(d["years_before_2023"]) })
-            .y(function (d) { return y(d["co2_ppmv"]) });
+        //Drawing the above in SVG
+        var svg = d3
+          .select("body")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
 
-         //Drawing the above in SVG
-         var svg = d3.select('body')
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          //not necessary but adds an offset so that numeric values are visable
+          .attr(
+            "transform",
+            "translate(" + margin.left + "," + margin.top + ")"
+          );
 
-            .append("g")
-            //not necessary but adds an offset so that numeric values are visable
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        // Add chart title
+        d3.select("svg")
+          .append("text")
+          .attr("x", (width + margin.left + margin.right) / 2)
+          .attr("y", margin.top / 2)
+          .attr("text-anchor", "middle")
+          .style("font-size", "24px")
+          .style("font-weight", "bold")
+          .text(chartTitle);
 
+        //Adding the axes
+        svg
+          .append("g") // append a <g> - group element
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
 
-         //Adding the axes
-         svg.append('g') // append a <g> - group element
-            .attr('class', 'x axis')
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-            
+        svg.append("g").attr("class", "y axis").call(yAxis);
 
-         svg.append('g')
-            .attr('class', 'y axis')
-            .call(yAxis);
+        // Add X-axis label
+        svg.append("text")
+            .attr("transform", "translate(" + (width / 2) + " ," + (height + 40) + ")")
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text("Years Before 2023");
 
-         //Drawing the path
-         svg.append("path") // Add the valueline path
-            .attr("d", valueLine(data)) // Draw the line
-            .style("stroke", "red") // Set the line color to red
-            .style("fill", "none") // Ensure the path is not filled
+         // Add Y-axis label
+         svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -50)
+            .attr("x", -(height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text("CO2 Concentration (ppmv)");
+
+        //Drawing the path
+        svg
+          .append("path") // Add the valueline path
+          .attr("d", valueLine(data)) // Draw the line
+          .style("stroke", "red") // Set the line color to red
+          .style("fill", "none"); // Ensure the path is not filled
       }
-   </script>
-</body>
-
+      
+    </script>
+  </body>
 </html>
