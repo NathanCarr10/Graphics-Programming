@@ -23,9 +23,10 @@ KernelSizeWidth = 3
 KernelSizeHeight1 = 13
 KernelSizeWidth1 = 13
 
-
+# 3x3 Blurred image 
 BlurredImage = cv2.GaussianBlur(img,(KernelSizeWidth, KernelSizeHeight),0)
 
+# 13x13 Blurred image
 BlurredImage1 = cv2.GaussianBlur(img,(KernelSizeWidth1, KernelSizeHeight1),0)
 
 # Use the cvtColor() function to grayscale the image
@@ -54,8 +55,8 @@ plt.title('Blurred Image 13x13'), plt.xticks([]), plt.yticks([])
 
 plt.show()
 
-imgOut = cv2.GaussianBlur(imgIn,(KernelSizeWidth, KernelSizeHeight),0)
-
+sobelHorizontal = cv2.Sobel(imgIn,cv2.CV_64F,1,0,ksize=5) # x dir
+sobelVertical = cv2.Sobel(imgIn,cv2.CV_64F,0,1,ksize=5) # y dir
 
 # Keep image on screen
 # cv2.waitKey(0)  
