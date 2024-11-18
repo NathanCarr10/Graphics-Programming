@@ -64,6 +64,7 @@
          //Adding the axes
          svg.append('g') // append a <g> - group element
             .attr('class', 'x axis')
+            .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
             
 
@@ -72,9 +73,10 @@
             .call(yAxis);
 
          //Drawing the path
-         svg.append("path") //Add the valueline path
-            .attr("d", valueLine(data));
-
+         svg.append("path") // Add the valueline path
+            .attr("d", valueLine(data)) // Draw the line
+            .style("stroke", "red") // Set the line color to red
+            .style("fill", "none") // Ensure the path is not filled
       }
    </script>
 </body>
