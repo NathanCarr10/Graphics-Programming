@@ -35,7 +35,7 @@ gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # Defining columns and rows
 ncols = 2
-nrows = 3
+nrows = 4
 
 # Original image
 plt.subplot(nrows, ncols,1),plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -64,6 +64,15 @@ plt.title('Sobal Image 1'), plt.xticks([]), plt.yticks([])
 # Sobal Image 2
 plt.subplot(nrows, ncols,6),plt.imshow(sobelVertical, cmap = 'gray')
 plt.title('Sobal Image 2'), plt.xticks([]), plt.yticks([])
+
+# Canny Definition
+cannyThreshold = 100
+cannyParam2 = 200
+canny = cv2.Canny(gray_image,cannyThreshold,cannyParam2)
+
+# Canny image
+plt.subplot(nrows, ncols,7),plt.imshow(canny, cmap = 'gray')
+plt.title('Canny Image'), plt.xticks([]), plt.yticks([])
 
 plt.show()
 
