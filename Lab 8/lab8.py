@@ -34,8 +34,8 @@ gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 # cv2.imshow('Grayscale', gray_image)
 
 # Defining columns and rows
-ncols = 2
-nrows = 4
+ncols = 3
+nrows = 3
 
 # Original image
 plt.subplot(nrows, ncols,1),plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
