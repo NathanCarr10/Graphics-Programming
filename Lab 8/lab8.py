@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 
 # Load the input image
-img = cv2.imread('ATU.jpg')
+img = cv2.imread('ShopStreet.jpg')
 # cv2.imshow('Original', img)
 
 #Creating Kernal Array
