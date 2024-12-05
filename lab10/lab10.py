@@ -1,3 +1,7 @@
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+
 import cv2
 
 from ultralytics import YOLO
